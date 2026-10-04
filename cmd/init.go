@@ -1,8 +1,10 @@
 package cmd
 
 import (
-	"fmt"
+	"os"
+	"path/filepath"
 
+	persfile "github.com/roipicsou/cbuild/persFile"
 	"github.com/spf13/cobra"
 )
 
@@ -12,24 +14,34 @@ import (
 	Creation du fichier c
 */
 
-func runInit(cmd *cobra.Command, arg []string){
-	if verbose {
-		fmt.Println("A coder")
-	} else {
-		fmt.Println("A coder")
+var nameProject string
+
+func runInit(cmd *cobra.Command, arg []string) {
+	if nameProject == "" {
+		chemin, err := os.Getwd()
+
+		if err != nil {
+			return
+		}
+		nameProject = filepath.Base(chemin)
+	}
+
+	config := persfile.NewConfig("gcc", nameProject)
+
+	err := persfile.WrtieFile("test.yaml", *config)
+	if err != nil {
+		return
 	}
 }
 
-var nameProject string
-
 var initCmd = &cobra.Command{
-	Use: "init",
+	Use:   "init",
 	Short: "initialise le projet",
-	Run: runInit,
+	Run:   runInit,
 }
 
 func init() {
 	rootCmd.AddCommand(initCmd)
 	initCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Affiche en detaille l'initialisation du projet")
-	initCmd.Flags().StringVarP(&nameProject, "name", "n", "Non", "Choix du nom a la place de cuilui du nom de dossier")
+	initCmd.Flags().StringVarP(&nameProject, "name", "n", "", "Choix du nom a la place de cuilui du nom de dossier")
 }
