@@ -28,10 +28,19 @@ func runInit(cmd *cobra.Command, arg []string) {
 
 	config := persfile.NewConfig("gcc", nameProject)
 
-	err := persfile.WrtieFile("test.yaml", *config)
+	err := persfile.WriteFile("config.yaml", *config)
 	if err != nil {
 		return
 	}
+
+	file, err := os.Create("main.c")
+	if err != nil {
+		return
+	}
+
+	defer file.Close()
+
+	file.WriteString("#include <stdio.h>\n\nint main() {\n\tprintf(\"Kiwi\");\n\treturn 0;\n}")
 }
 
 var initCmd = &cobra.Command{
