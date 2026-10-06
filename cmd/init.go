@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	persfile "github.com/roipicsou/cbuild/persFile"
+	"github.com/roipicsou/cbuild/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,7 @@ func runInit(cmd *cobra.Command, arg []string) {
 		}
 		nameProject = filepath.Base(chemin)
 	}
+	utils.VerPrint(verbose, false, "Asigniations du nom")
 
 	config := persfile.NewConfig("gcc", nameProject)
 
@@ -32,6 +34,8 @@ func runInit(cmd *cobra.Command, arg []string) {
 	if err != nil {
 		return
 	}
+
+	utils.VerPrint(verbose, false, "Creation du fichier de configuration")
 
 	file, err := os.Create("main.c")
 	if err != nil {
@@ -41,6 +45,7 @@ func runInit(cmd *cobra.Command, arg []string) {
 	defer file.Close()
 
 	file.WriteString("#include <stdio.h>\n\nint main() {\n\tprintf(\"Kiwi\");\n\treturn 0;\n}")
+	utils.VerPrint(verbose, false, "Creation du fichier de base")
 }
 
 var initCmd = &cobra.Command{
