@@ -45,7 +45,7 @@ func runInit(cmd *cobra.Command, arg []string) {
 	defer file.Close()
 
 	file.WriteString("#include <stdio.h>\n\nint main() {\n\tprintf(\"Kiwi\");\n\treturn 0;\n}")
-	utils.VerPrint(verbose, false, "Creation du fichier de base")
+	utils.VerPrint(verbose, true, "Creation du fichier de base")
 }
 
 var initCmd = &cobra.Command{
